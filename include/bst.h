@@ -20,18 +20,18 @@ class BST {
     node_count_++;
   }
 
-  bool Search(const T& value) const {
+  int Search(const T& value) const {
     return Search(root_, value);
   }
-  
-  bool search(const T& value) const {
+
+  int search(const T& value) const {
     return Search(value);
   }
 
   int Size() const {
     return node_count_;
   }
-  
+
   int size() const {
     return Size();
   }
@@ -39,7 +39,7 @@ class BST {
   int Depth() const {
     return Depth(root_);
   }
-  
+
   int depth() const {
     return Depth();
   }
@@ -47,7 +47,7 @@ class BST {
   bool Empty() const {
     return root_ == nullptr;
   }
-  
+
   bool empty() const {
     return Empty();
   }
@@ -87,9 +87,9 @@ class BST {
     return node;
   }
 
-  bool Search(Node* node, const T& value) const {
+  int Search(Node* node, const T& value) const {
     if (node == nullptr) {
-      return false;
+      return 0;
     }
 
     if (value < node->key) {
@@ -97,7 +97,7 @@ class BST {
     } else if (value > node->key) {
       return Search(node->right, value);
     } else {
-      return true;
+      return node->count;
     }
   }
 
