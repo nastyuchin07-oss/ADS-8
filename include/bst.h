@@ -4,7 +4,6 @@
 #define INCLUDE_BST_H_
 
 #include <algorithm>
-#include <iostream>
 #include <utility>
 
 template<typename T>
