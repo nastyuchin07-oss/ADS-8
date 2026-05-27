@@ -1,124 +1,84 @@
 // Copyright 2021 NNTU-CS
-
 #ifndef INCLUDE_BST_H_
 #define INCLUDE_BST_H_
 
+#include <string>
 #include <algorithm>
-#include <utility>
 
 template<typename T>
 class BST {
  public:
-  BST() : root_(nullptr), node_count_(0) {}
+  BST() : root_(nullptr), size_(0) {}
 
   ~BST() {
-    Clear(root_);
+    clear(root_);
   }
 
-  void Insert(const T& value) {
-    root_ = Insert(root_, value);
-    node_count_++;
-  }
-
-  int Search(const T& value) const {
-    return Search(root_, value);
+  void insert(const T& value) {
+    insert(root_, value);
   }
 
   int search(const T& value) const {
-    return Search(value);
-  }
-
-  int Size() const {
-    return node_count_;
-  }
-
-  int size() const {
-    return Size();
-  }
-
-  int Depth() const {
-    return Depth(root_);
+    return search(root_, value);
   }
 
   int depth() const {
-    return Depth();
-  }
+    return depth(root_) - 1;
+}
 
-  bool Empty() const {
+  bool empty() const {
     return root_ == nullptr;
   }
 
-  bool empty() const {
-    return Empty();
-  }
-
-  void GetNodes(std::pair<T, int> arr[], int* size) const {
-    *size = 0;
-    CollectNodes(root_, arr, size);
+  int size() const {
+    return size_;
   }
 
  private:
   struct Node {
-    T key;
+    T data;
     int count;
     Node* left;
     Node* right;
-
-    explicit Node(const T& value)
-        : key(value), count(1), left(nullptr), right(nullptr) {}
+    explicit Node(const T& value) : data(value), count(1), left(nullptr), right(nullptr) {}
   };
 
   Node* root_;
-  int node_count_;
+  int size_;
 
-  Node* Insert(Node* node, const T& value) {
+  void insert(Node*& node, const T& value) {
     if (node == nullptr) {
-      return new Node(value);
+      node = new Node(value);
+      size_++;
+      return;
     }
-
-    if (value < node->key) {
-      node->left = Insert(node->left, value);
-    } else if (value > node->key) {
-      node->right = Insert(node->right, value);
+    if (value < node->data) {
+      insert(node->left, value);
+    } else if (value > node->data) {
+      insert(node->right, value);
     } else {
       node->count++;
     }
-
-    return node;
   }
 
-  int Search(Node* node, const T& value) const {
-    if (node == nullptr) {
-      return 0;
-    }
-
-    if (value < node->key) {
-      return Search(node->left, value);
-    } else if (value > node->key) {
-      return Search(node->right, value);
-    } else {
-      return node->count;
-    }
+  int search(Node* node, const T& value) const {
+    if (node == nullptr) return 0;
+    if (value == node->data) return node->count;
+    if (value < node->data) return search(node->left, value);
+    return search(node->right, value);
   }
 
-  int Depth(Node* node) const {
-    if (node == nullptr) {
-      return 0;
-    }
-    return 1 + std::max(Depth(node->left), Depth(node->right));
-  }
+  int depth(Node* node) const {
+    if (node == nullptr) return 0;
+    int left_depth = depth(node->left);
+    int right_depth = depth(node->right);
+    return std::max(left_depth, right_depth) + 1;
+}
 
-  void CollectNodes(Node* node, std::pair<T, int> arr[], int* index) const {
+  void clear(Node* node) {
     if (node == nullptr) return;
-    CollectNodes(node->left, arr, index);
-    arr[(*index)++] = {node->key, node->count};
-    CollectNodes(node->right, arr, index);
-  }
-
-  void Clear(Node* node) {
-    if (node == nullptr) return;
-    Clear(node->left);
-    Clear(node->right);
+    clear(node->left);
+    clear(node->right);
     delete node;
   }
 };
