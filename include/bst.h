@@ -23,17 +23,33 @@ class BST {
   bool Search(const T& value) const {
     return Search(root_, value);
   }
+  
+  bool search(const T& value) const {
+    return Search(value);
+  }
 
   int Size() const {
     return node_count_;
+  }
+  
+  int size() const {
+    return Size();
   }
 
   int Depth() const {
     return Depth(root_);
   }
+  
+  int depth() const {
+    return Depth();
+  }
 
   bool Empty() const {
     return root_ == nullptr;
+  }
+  
+  bool empty() const {
+    return Empty();
   }
 
   void GetNodes(std::pair<T, int> arr[], int* size) const {
